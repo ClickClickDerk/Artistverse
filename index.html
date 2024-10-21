@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artistverse</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- FlyControls CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/FlyControls.js"></script>
+
+    <script>
+        // Scene, camera, and renderer setup
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Add some light to the scene
+        var ambientLight = new THREE.AmbientLight(0x404040, 1.5); // Soft ambient light
+        scene.add(ambientLight);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+        // Load textures
+        var textureLoader = new THREE.TextureLoader();
+        var wallTexture = textureLoader.load('assets/img/unicorn.jpg');
+
+        var wallMaterial = new THREE.MeshBasicMaterial({ map: wallTexture, side: THREE.DoubleSide });
+
+        // Define panel dimensions
+        var wallGeometry = new THREE.PlaneGeometry(20, 20); // All walls will be 20x20 in size
+
+        // Create 6 walls and position them correctly
+        var frontWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        frontWall.position.set(0, 10, -10); // Front
+        scene.add(frontWall);
+
+        var backWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        backWall.position.set(0, 10, 10); // Back
+        backWall.rotation.y = Math.PI; // Rotate to face backward
+        scene.add(backWall);
+
+        var leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        leftWall.position.set(-10, 10, 0); // Left
+        leftWall.rotation.y = Math.PI / 2; // Rotate to face left
+        scene.add(leftWall);
+
+        var rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
+        rightWall.position.set(10, 10, 0); // Right
+        rightWall.rotation.y = -Math.PI / 2; // Rotate to face right
+        scene.add(rightWall);
+
+        var ceiling = new THREE.Mesh(wallGeometry, wallMaterial);
+        ceiling.position.set(0, 20, 0); // Ceiling
+        ceiling.rotation.x = Math.PI / 2; // Rotate to face downward
+        scene.add(ceiling);
+
+        var floor = new THREE.Mesh(wallGeometry, wallMaterial);
+        floor.position.set(0, 0, 0); // Floor
+        floor.rotation.x = -Math.PI / 2; // Rotate to face upward
+        scene.add(floor);
+
+        // FlyControls setup
+        var controls = new THREE.FlyControls(camera);
+        controls.movementSpeed = 10;  // Set the speed of movement
+        controls.domElement = (camera, renderer.domElement);
+        controls.rollSpeed = Math.PI / 0.05;  // Roll sensitivity
+        controls.autoForward = false;
+        controls.dragToLook = true;
+
+        // Position the camera
+        camera.position.set(0, 10, 5);
+
+        // Define the boundaries
+        var boundary = {
+            minX: -50,  // Set the minimum X boundary
+            maxX: 50,   // Set the maximum X boundary
+            minY: 0,    // Prevent from going below the floor (y-axis)
+            maxY: 20,   // Height limit for the camera
+            minZ: -50,  // Set the minimum Z boundary
+            maxZ: 50    // Set the maximum Z boundary
+        };
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Update FlyControls
+            controls.update(0.01);  // Pass delta (time since the last call)
+
+            // Check if the camera hits minX or maxX and alert
+    if (camera.position.x <= boundary.minX) {
+        console.log("Camera hit the minimum X boundary!");
+        camera.position.x = boundary.minX; // Clamp to minX
+    } else if (camera.position.x >= boundary.maxX) {
+        console.log("Camera hit the maximum X boundary!");
+        camera.position.x = boundary.maxX; // Clamp to maxX
+    }
+
+    else if (camera.position.y <= boundary.minY) {
+        console.log("Camera hit the minimum Y boundary!");
+        camera.position.y = boundary.minY; // Clamp to minX
+    } else if (camera.position.y >= boundary.maxY) {
+        console.log("Camera hit the maximum Y boundary!");
+        camera.position.x = boundary.maxY; // Clamp to maxX
+    }
+
+    else if (camera.position.z <= boundary.minZ) {
+        console.log("Camera hit the minimum Z boundary!");
+        camera.position.z = boundary.minZ; // Clamp to minX
+    } else if (camera.position.z >= boundary.maxZ) {
+        console.log("Camera hit the maximum Z boundary!");
+        camera.position.x = boundary.maxZ; // Clamp to maxX
+    }
+
+
+            // Check and clamp boundaries for the camera position
+            if (camera.position.x <= boundary.minX) {
+                camera.position.x = boundary.minX; // Clamp to minX
+            } else if (camera.position.x >= boundary.maxX) {
+                camera.position.x = boundary.maxX; // Clamp to maxX
+            }
+
+            if (camera.position.y <= boundary.minY) {
+                camera.position.y = boundary.minY; // Clamp to minY
+            } else if (camera.position.y >= boundary.maxY) {
+                camera.position.y = boundary.maxY; // Clamp to maxY
+            }
+
+            if (camera.position.z <= boundary.minZ) {
+                camera.position.z = boundary.minZ; // Clamp to minZ
+            } else if (camera.position.z >= boundary.maxZ) {
+                camera.position.z = boundary.maxZ; // Clamp to maxZ
+            }
+
+            // Render the scene
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
