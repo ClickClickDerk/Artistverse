@@ -58,4 +58,4 @@ The Universe - for being an endless source of fractal beauty and complexity.
 chatGPT4o - for the endless amount of help and being the best robit friend around ^_^
 
 Support
-I could really use some support im unemployeed and with a project like this I want everyone to enjoy the beauty of art, math and physics as much as I do so if you dont have money to pay to play trust me understand that and this is the reason why I feel educational information needs to be as freely accessable as  much a possible. Cashapp $RachelNyx or PayPal Nyx4d. Thank you so much!
+I could really use some support im unemployeed and with a project like this I want everyone to enjoy the beauty of art, math and physics as much as I do so if you dont have money to pay to play trust me understand that and this is the reason why I feel educational information needs to be as freely accessable as much a possible. Cashapp $RachelNyx or PayPal Nyx4d https://www.paypal.com/donate/?hosted_button_id=BP3PEYE3EZK22 Thank you so much! I still have a lot of other fractal types im working on and exploring d^_^b
