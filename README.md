@@ -1,4 +1,7 @@
-Artistverse
+Artistverse 
+
+Use Q & E to rotate the screen and wsad or the arrow keys while rotating. fractalscript.com - fractalscript.xyz
+
 Artistverse is an innovative project that merges art, mathematics, and physics to create dynamic fractal-based visuals in a 3D environment using Three.js. With the ability to manipulate a single image into mesmerizing fractal patterns, this project serves as an artistic expression of the interconnectedness of the universe. The fractal engine at the heart of this project reveals infinite beauty and complexity from a single input, offering a visual representation of the universe's repeating structures.
 
 Features
